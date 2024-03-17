@@ -1,0 +1,13 @@
+.formEmail {
+    content: '';
+    display: block;
+}
+
+.required {
+    background: hsl(0, 100%, 86%) !important;
+}
+
+.informationMessage {
+    font-size: smaller;
+    color: hsl(0, 90%, 65%);
+}

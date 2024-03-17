@@ -3,11 +3,12 @@ import FormEmail from "../formEmail/formEmail";
 import { ResponseChallengesInterface } from "../../interfaces/responseChallengesInterface";
 import Mfa from "../mfa/mfa";
 import Password from "../password/password";
+import { LoginInterface } from "../../interfaces/loginInterface";
+import sytles from "./login.module.scss";
 
-function Login(): React.JSX.Element {
+function Login({ handlerJwtToken }: LoginInterface): React.JSX.Element {
     const [response, setResponse] = useState<ResponseChallengesInterface>({ imageURI: "", challenge: ""});
     const [email, setEmail] = useState("");
-    const [jwtToken, setJwtToken] = useState("");
 
     function handlerResponse(r: ResponseChallengesInterface) {
         setResponse(r);
@@ -15,10 +16,6 @@ function Login(): React.JSX.Element {
 
     function handlerEmail(email: string) {
         setEmail(email);
-    }
-
-    function handlerJwtToken(token: string) {
-        setJwtToken(token);
     }
 
     function Component(): React.JSX.Element {
@@ -36,7 +33,7 @@ function Login(): React.JSX.Element {
     }
 
     return (
-        <div>
+        <div className={sytles.form}>
             <Component />
         </div>
     )

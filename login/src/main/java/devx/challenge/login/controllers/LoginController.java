@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
+
 @RestController
 public class LoginController {
 
@@ -30,6 +34,7 @@ public class LoginController {
   public LoginResponseDTO login(@RequestBody LoginDTO loginDTO) {
     LoginResponseDTO response = new LoginResponseDTO();
     String token = mfaService.generateToken();
+    UserEntity userTest = loginService.searchUserByEmail(loginDTO.email());
     if(!loginService.isUserCreated(loginDTO.email())) {
       response.setChallenge(Challanges.VALIDATE_QR_CODE);
       String image = mfaService.generateQrCodeImage(token);
@@ -37,12 +42,28 @@ public class LoginController {
 
       UserEntity user = new UserEntity();
       user.setEmail(loginDTO.email());
-      user.setMfaEnabled(true);
       user.setMfaCode(token);
       user.setLastMfaAvailable(false);
       loginService.saveUserInDb(user);
-    } else {
+
+      return response;
+    }
+
+    UserEntity user = loginService.searchUserByEmail(loginDTO.email());
+
+    if(!user.isMfaEnabled()) {
+      String image = mfaService.generateQrCodeImage(user.getMfaCode());
+      response.setChallenge(Challanges.VALIDATE_QR_CODE);
+      response.setImageURI(image);
+      return response;
+    }
+
+    long daysBetweenLastLogin = ChronoUnit.DAYS.between(LocalDateTime.now(), user.getLastLogin());
+    int maxTimeWithoutOTP = 7;
+    if(daysBetweenLastLogin > maxTimeWithoutOTP) {
       response.setChallenge(Challanges.SEND_OTP);
+    } else {
+      response.setChallenge(Challanges.SEND_PASSWORD);
     }
 
     return response;
@@ -70,6 +91,8 @@ public class LoginController {
     } else {
       dto.setChallenge(Challanges.SEND_PASSWORD);
     }
+    user.setMfaEnabled(true);
+    loginService.saveUserInDb(user);
     return ResponseEntity.ok(dto);
   }
 
@@ -89,11 +112,14 @@ public class LoginController {
 
     if(user.getPassword() == null) {
       user.setPassword(dto.password());
+      user.setLastLogin(LocalDateTime.now());
       loginService.saveUserInDb(user);
       return ResponseEntity.ok(authenticationResponseDTO);
     }
 
     if(user.getPassword().equals(dto.password())) {
+      user.setLastLogin(LocalDateTime.now());
+      loginService.saveUserInDb(user);
       return ResponseEntity.ok(authenticationResponseDTO);
     }
     return ResponseEntity.badRequest().build();

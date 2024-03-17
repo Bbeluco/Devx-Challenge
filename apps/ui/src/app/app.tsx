@@ -2,25 +2,32 @@
 import styles from './app.module.scss';
 
 
-import { Route, Routes, Link } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Login from '../components/login/login';
+import LoggedPage from '../components/loggedPage/loggedPage';
+import { useState } from 'react';
 
 export function App() {
+
+  const [jwtToken, setJwtToken] = useState("");
+
+  function handlerJwtToken(token: string) {
+    setJwtToken(token);
+  } 
+
   return (
-    <div>
+    <div className={styles.main}>
       <Routes>
         <Route
           path="/"
           element={
-            <Login />
+            <Login handlerJwtToken={handlerJwtToken}/>
           }
         />
         <Route
-          path="/page-2"
+          path="/loggedPage"
           element={
-            <div>
-              <Link to="/">Click here to go back to root page.</Link>
-            </div>
+            <LoggedPage jwtToken={jwtToken}/>
           }
         />
       </Routes>

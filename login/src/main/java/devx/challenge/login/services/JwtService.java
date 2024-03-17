@@ -18,7 +18,7 @@ import java.util.function.Function;
 public class JwtService {
   private final String secretKey = "F2BE24F1A2E8BDEA264C7534C2C28F2BE24F1A2E8BDEA264C7534C2C28F2BE24F1A2E8BDEA264C7534C2C28F2BE24F1A2E8BDEA264C7534C2C28";
 
-  private final int refreshExpiration = 1000 * 60 * 24;
+  private final int refreshExpiration = 1000 * 60;
 
   public String extractUsername(String token) {
     return extractClaim(token, Claims::getSubject);
@@ -70,7 +70,7 @@ public class JwtService {
     return Jwts.parserBuilder()
       .setSigningKey(getSignIngKey())
       .build()
-      .parseClaimsJwt(token)
+      .parseClaimsJws(token)
       .getBody();
   }
 

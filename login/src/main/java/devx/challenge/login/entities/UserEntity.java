@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Date;
 
 @Data
 @Builder
@@ -27,6 +29,15 @@ public class UserEntity implements UserDetails {
   private boolean isMfaEnabled = false;
   private String mfaCode;
   private boolean isLastMfaAvailable;
+  private LocalDateTime lastLogin;
+
+  public LocalDateTime getLastLogin() {
+    return lastLogin;
+  }
+
+  public void setLastLogin(LocalDateTime lastLogin) {
+    this.lastLogin = lastLogin;
+  }
 
   public boolean isLastMfaAvailable() {
     return isLastMfaAvailable;
