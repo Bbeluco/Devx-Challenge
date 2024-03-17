@@ -7,7 +7,7 @@ function Password(props: PasswordInterface): React.JSX.Element {
 
     function sendPasswordToApi() {
         let password: string = inptPass1.current.value;
-        if(password !== inptPass2.current.value) {
+        if(props.response.challenge !== "SEND_PASSWORD" && password !== inptPass2.current.value) {
             alert("Passwords different, please check information");
         }
 
@@ -39,7 +39,9 @@ function Password(props: PasswordInterface): React.JSX.Element {
     function enterPassword(): React.JSX.Element {
         return (
             <div>
-                UNDER CONSTRUCTION
+                <h1>Please, insert your password</h1>
+                <input type="password" id="password" name="password" ref={inptPass1} required/>
+                <button id="btnSendEmail" onClick={sendPasswordToApi}>Confirm</button>
             </div>
         )
     }

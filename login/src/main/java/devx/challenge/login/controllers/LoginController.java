@@ -41,6 +41,8 @@ public class LoginController {
       user.setMfaCode(token);
       user.setLastMfaAvailable(false);
       loginService.saveUserInDb(user);
+    } else {
+      response.setChallenge(Challanges.SEND_OTP);
     }
 
     return response;
@@ -62,7 +64,12 @@ public class LoginController {
 
     loginService.changeStatusOfValidMfaToTrue(mfaDTO.email());
     ResponseChallangesDTO dto = new ResponseChallangesDTO();
-    dto.setChallenge(Challanges.SET_PASSWORD);
+
+    if(user.getPassword() == null) {
+      dto.setChallenge(Challanges.SET_PASSWORD);
+    } else {
+      dto.setChallenge(Challanges.SEND_PASSWORD);
+    }
     return ResponseEntity.ok(dto);
   }
 

@@ -19,15 +19,31 @@ function Mfa(props: MfaInterface): React.JSX.Element {
         })
     }
 
+    function registerOtpOnDevice(): React.JSX.Element {
+        return(
+            <div>
+                <img src={props.response.imageURI} alt="Qr code OTP" />
+                <input type="email" id="otp" name="otp" ref={inptOtpCode} required/>
+                <p>Please, scan the QR code and insert the code</p>
+                <button id="btnSendEmail" onClick={sendOtpToApi}>Confirm</button>
+            </div>
+        )
+    }
 
-    return(
-        <div>
-            <img src={props.response.imageURI} alt="Qr code OTP" />
-            <input type="email" id="otp" name="otp" ref={inptOtpCode} required/>
-            <p>Please, scan the QR code and insert the code</p>
-            <button id="btnSendEmail" onClick={sendOtpToApi}>Confirm</button>
-        </div>
-    )
+    function inputOtpSavedInMobile(): React.JSX.Element {
+        return(
+            <div>
+                <p>Please, insert OTP code</p>
+                <input type="email" id="otp" name="otp" ref={inptOtpCode} required/>
+                <button id="btnSendEmail" onClick={sendOtpToApi}>Confirm</button>
+            </div>
+        )
+    }
+
+
+    return props.response.challenge == "VALIDATE_QR_CODE" 
+        ? registerOtpOnDevice() 
+        : inputOtpSavedInMobile();
 }
 
 export default Mfa;
