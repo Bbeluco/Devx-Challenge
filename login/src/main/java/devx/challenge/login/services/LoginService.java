@@ -31,7 +31,6 @@ public class LoginService {
     return user != null;
   }
 
-
   public AuthenticationResponseDTO register(SetupPasswordDTO dto) {
     UserEntity user = new UserEntity();
     user.setEmail(dto.email());
@@ -52,7 +51,7 @@ public class LoginService {
   public void changeStatusOfValidMfaToTrue(String email) {
     UserEntity user = userRepository.findByEmail(email);
     user.setMfaEnabled(true);
-    userRepository.save(user);
+    saveUserInDb(user);
   }
 
   public void saveUserInDb(UserEntity user) {

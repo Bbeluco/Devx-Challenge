@@ -60,7 +60,7 @@ public class MfaService {
   public boolean isOTPSetted(MfaDTO dto) {
     if(loginService.isUserCreated(dto.email())) {
       UserEntity user = userRepository.findByEmail(dto.email());
-      return true;
+      return user.isMfaEnabled();
     }
 
     return false;
