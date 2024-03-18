@@ -6,10 +6,18 @@ function FormEmail(props: FormEmailInterface): React.JSX.Element {
     const inptEmailRef: any = useRef(null);
     const [requiredFiled, setRequiredField] = useState(false);
 
+    const validateEmail = (email: string) => {
+        return String(email)
+          .toLowerCase()
+          .match(
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+          );
+      };
+
     function sendEmailToApi() {
         let email: string = inptEmailRef.current.value;
 
-        if(!email) {
+        if(!email || !validateEmail(email)) {
             setRequiredField(true);
             return;
         }
