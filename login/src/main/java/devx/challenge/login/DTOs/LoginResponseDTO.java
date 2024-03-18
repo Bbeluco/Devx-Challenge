@@ -5,6 +5,15 @@ import devx.challenge.login.Enums.Challanges;
 public class LoginResponseDTO {
   private String imageURI;
   private Challanges challenge;
+  private String otpCode;
+
+  public String getOtpCode() {
+    return otpCode;
+  }
+
+  public void setOtpCode(String otpCode) {
+    this.otpCode = otpCode;
+  }
 
   public String getImageURI() {
     return imageURI;

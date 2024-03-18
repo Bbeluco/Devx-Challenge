@@ -1,54 +1,70 @@
-# Kerno's DevX Challenge
+Stacks utilizadas
+como rodar o projeto
+problemas encontrados durante o caminho
+melhorias futuras
+fluxos de codigo
+Pontos requeridos que faltaram
 
-Howdy 👋  We are glad you made it!
+# Stacks
+ - Java 17 ( Spring Boot, Java TOTP, H2 database )
+ - Typescript ( React, SCSS, Jest )
 
-We are in the hunt for strong full-stack typescript developers to join our Developer Experience team! You are proficient in React and have a strong engineering mindset. You understand the depth of web technologies, data structures, communication protocols and architectures, state management and have passion (and good eye) for building absolutely mind-blowing, 2024-worthy user experiences.  
-  
-You can autonomously work on your BFF with Node.js consuming data services from databases, pubsubs and other services provided by the data teams.  
+### Requirements
 
-**And don't be shy!**
-We place great value in education and experience; but we also recognize that talent is built on passion and hours dedicated to deliberate practice and learning... so don't shy away from applying if you feel you have what it takes!
+Belong all the stacks said in the previous topic, the user will need a cellphone to check the MFA. I integrated a OTP system in the project, so use a Google Authentication or anything similar to scan the QR code. 
 
+# How to run code
 
+## Backend
 
-## The challenge:
-You need to build an authentication screen and its supporting API with React and Node.js
-The module needs to support a dynamic MFA validation besides the usual user/password set.
+There's 2 ways to run the code:
+1. Open the login project in your IDE, enter in *src/main/java/devx/challenge/login/LoginApplication.java* and run it direct.
+2. Run the .jar file in XXXXXXXXXXXXXX
 
-Here is the expected flow in a nutshell:
-- A user comes to the login page and enters its email
-- If no user with the required email exists, just create it
-- If the user has not been active for more than 7 days, ask for a one-time-password
-	- It must be 6 digits, the API should print it in console.log for challenge validation purpose -- no need to plug an actual email delivery system or any other form of MFA token delivery.
-- If the user has no password (was newly created), ask for a new password and set it
-	- On success, return the JWT tokens to be further used by the user
-- If the user has a password, ask for the password. 
-	-  On success, return the JWT tokens to be further used by the user
+## Frontend
 
-You are free to structure the API, style the UI and add whatever you see fit to deliver (from libraries to animations to backend frameworks). There are no restrictions on your weapons of choice as long as you stay within the React+Node.js universe.
+Run the following in project root command to start frontend page
+1. npm start
 
+## Access contents
+To access the contents available in backend you could check the list of endpoints availables in swagger
+ - http://localhost:8080/swagger-ui/index.html
 
-### Visual guideline
-Here's a little example flow in case you need a little push to get going:
-```mermaid
-sequenceDiagram
-FE ->> BFF: { email: 'youremail@yolo.com' }
-BFF ->> FE: { session: <session-hash>, challenge: 'validate-email' }
-FE ->> BFF: { session: <session-hash>, secret: '123456' }
-BFF ->> FE: { session: <session-hash>, challenge: 'set-password' }
-FE ->> BFF: { session: <session-hash>, newPassword: 'FU(iolkevn23$90' }
-BFF ->> FE: { status: 'OK', jwtToken: {...}}
-```
+To access the frontend page just go to the following link
+ - http://localhost:4200
 
+## Important considerations
 
-### Some extra considerations
-1. This is your presentation letter. Don't shy away from adding whatever extension to the requirements you think would be interesting to discuss during the technical interview.
-2. We use **Kotlin** for our backend services (except for the BFF's which are done in NestJS). You can get trained on the job, but doing the backend part of this assignment in Kotlin or Java will earn you some extra points.
+To facilitate all the process of running the project, it was created using an in memory database (H2), obviously in a real situation the best practice would be using another db like mariaDB, OracleDb, SQL Server, etc. But in this situation it will be pretty easy to run all the project.
 
+I faced one issue while trying to run my frontend project using *npm start* it seems that the nx command was invalid so I updated it to *nx serve ui --watch*
 
----
+# Obstacles overcome
 
-### Clone this project!
-Once you are happy with it, zip it and send it to dev-challenges@kerno.io for us to review.
+During develop proccess i faced some problems, in this section I'll explain my thoughts to pass through all these hindrances.
 
-The repository already contains a usable skeleton for the react application and express API setup with [NX](https://nx.dev). Feel free to change it for a Next and/or Nest frontend or backend if you are more comfortable with those frameworks.
+### Security filter chain
+
+To be honest, I've never configure the security layer in Spring boot by my own, so all these where new to be (I undestand the workflows but never configured this in practice).
+
+I think the security filter chain was the hardest part to be, I believe this bc all this stuff is really confuse in the beggining, and additionally I had the JWT token to setup property, so I faced A LOT of bugs related to give the property permission and check if the given token is really valid to see the private content.
+
+The proccess to resolve all those bugs were pretty similar, I love to use "evaluation expression" in IntelliJ, this helps me a lot to check the current state of all the variables presents in the context and check all the methods available to use.
+
+To get some insights of the erros I also use StackOverflow and a lot of other forums available to check if someone has some solution to all the problems I got during the develop of this project.
+
+### Create a nice UI
+
+I confess to you that I'm not an artistic guy, I can replicate screen in Figma and also looking in images all over the internet (if the CSS is not THAT complex). I wanted to create a nice UI to you use while testing the project. To resolve this, I copied the template from one code I found on codepen.io and edit it to be more within the reality of the test. I did this because I think the main goal here is to show integrations between FE/BE, so I spent more time putting features to the project and less time styling the page itself.
+
+# Future improves
+
+In this section I'll tell in my opinion what I'ld suggest if we're working in a real project. This part is just to demonstrate critical analysis about the projects I'm working on
+
+1. I would suggest to add a remember-me button, so the user do not need to insert the password everytime
+2. I would suggest to add a "Forget my password" button, this feature would bring the flexibility to the user recovery its account if needed.
+3. Add a recovery token feature. In case the user lose the cellphone, he/she can gain access again using recovery token provided while registered.
+
+# Conclusion
+
+As a conclusion, I like the challenge, it was very fun do all those features even if I had no idea how everything works, thank you very much for this opportunity. :D

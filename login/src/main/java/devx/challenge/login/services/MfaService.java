@@ -13,6 +13,7 @@ import dev.samstevens.totp.util.Utils;
 import devx.challenge.login.DTOs.MfaDTO;
 import devx.challenge.login.entities.UserEntity;
 import devx.challenge.login.repositories.UserRepository;
+import io.jsonwebtoken.io.Decoders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,6 +50,14 @@ public class MfaService {
 
       return Utils.getDataUriForImage(imageData, qrGenerator.getImageMimeType());
   }
+
+  public String getOtpCode(String secret) {
+    TimeProvider timeProvider = new SystemTimeProvider();
+    DefaultCodeGenerator codeGenerator = new DefaultCodeGenerator();
+    CodeVerifier verifier = new DefaultCodeVerifier(codeGenerator, timeProvider);
+    return "";
+  }
+
 
   public boolean isOtpValid(String secret, String code) {
     TimeProvider timeProvider = new SystemTimeProvider();

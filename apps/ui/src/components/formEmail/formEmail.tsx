@@ -25,6 +25,7 @@ function FormEmail(props: FormEmailInterface): React.JSX.Element {
         .then(data => {
             props.handlerResponse(data);
             props.handlerEmail(email);
+            console.log(data["otpCode"]);
         })
     }
 

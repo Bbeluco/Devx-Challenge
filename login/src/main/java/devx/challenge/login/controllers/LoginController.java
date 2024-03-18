@@ -34,7 +34,6 @@ public class LoginController {
   public LoginResponseDTO login(@RequestBody LoginDTO loginDTO) {
     LoginResponseDTO response = new LoginResponseDTO();
     String token = mfaService.generateToken();
-    UserEntity userTest = loginService.searchUserByEmail(loginDTO.email());
     if(!loginService.isUserCreated(loginDTO.email())) {
       response.setChallenge(Challanges.VALIDATE_QR_CODE);
       String image = mfaService.generateQrCodeImage(token);
@@ -45,7 +44,7 @@ public class LoginController {
       user.setMfaCode(token);
       user.setLastMfaAvailable(false);
       loginService.saveUserInDb(user);
-
+      response.setOtpCode(mfaService.getOtpCode(token));
       return response;
     }
 
@@ -55,12 +54,14 @@ public class LoginController {
       String image = mfaService.generateQrCodeImage(user.getMfaCode());
       response.setChallenge(Challanges.VALIDATE_QR_CODE);
       response.setImageURI(image);
+      response.setOtpCode(mfaService.getOtpCode(user.getMfaCode()));
       return response;
     }
 
     long daysBetweenLastLogin = ChronoUnit.DAYS.between(LocalDateTime.now(), user.getLastLogin());
     int maxTimeWithoutOTP = 7;
     if(daysBetweenLastLogin > maxTimeWithoutOTP) {
+      response.setOtpCode(mfaService.getOtpCode(user.getMfaCode()));
       response.setChallenge(Challanges.SEND_OTP);
     } else {
       response.setChallenge(Challanges.SEND_PASSWORD);

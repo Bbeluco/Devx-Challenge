@@ -24,13 +24,14 @@ public class SecurityConfig {
   private UserAuthenticationFilter userAuthenticationFilter;
 
   public static final String [] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = { "/login", "/mfa", "/password" };
+  public static final String[] SWAGGER_LIST = {"/swagger-ui.html", "/v2/api-docs", "webjars", "swagger-resources"};
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.authorizeHttpRequests(
-        authorize -> authorize.requestMatchers(new AntPathRequestMatcher("/login"), new AntPathRequestMatcher("/mfa"), new AntPathRequestMatcher("/password")).permitAll()
+        authorize -> authorize.requestMatchers(new AntPathRequestMatcher("/private")).authenticated()
       )
       .authorizeHttpRequests(
-        authorize -> authorize.anyRequest().authenticated()
+        authorize -> authorize.anyRequest().permitAll()
       )
       .httpBasic(Customizer.withDefaults()).csrf(AbstractHttpConfigurer::disable)
       .addFilterBefore(userAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
