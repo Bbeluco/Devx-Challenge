@@ -38,7 +38,7 @@ function Mfa(props: MfaInterface): React.JSX.Element {
             <div>
                 <img src={props.response.imageURI} alt="Qr code OTP" width={250} height={250}/>
                 <p>Please, scan the QR code and insert the code</p>
-                <input type="text" id="otp" name="otp" ref={inptOtpCode} className={requiredFiled ? styles.required : ""} onChange={resetRequiredField} maxLength={6}/>
+                <input type="text" id="otp" name="otp" ref={inptOtpCode} className={requiredFiled ? styles.required : ""} onChange={resetRequiredField}/>
                 {requiredFiled ? <p className={styles.informationMessage}>Invalid OTP Number</p> : ""}
                 <button id="btnSendEmail" onClick={sendOtpToApi}>Confirm</button>
             </div>
@@ -49,7 +49,7 @@ function Mfa(props: MfaInterface): React.JSX.Element {
         return(
             <div>
                 <p>Please, insert OTP code</p>
-                <input type="text" id="otp" name="otp" ref={inptOtpCode} className={requiredFiled ? styles.required : ""} onChange={resetRequiredField} maxLength={6}/>
+                <input type="text" id="otp" name="otp" ref={inptOtpCode} className={requiredFiled ? styles.required : ""} onChange={resetRequiredField}/>
                 {requiredFiled ? <p className={styles.informationMessage}>Invalid OTP Number</p> : ""}
                 <button id="btnSendEmail" onClick={sendOtpToApi}>Confirm</button>
             </div>

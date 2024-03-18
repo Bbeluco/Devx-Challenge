@@ -51,14 +51,6 @@ public class MfaService {
       return Utils.getDataUriForImage(imageData, qrGenerator.getImageMimeType());
   }
 
-  public String getOtpCode(String secret) {
-    TimeProvider timeProvider = new SystemTimeProvider();
-    DefaultCodeGenerator codeGenerator = new DefaultCodeGenerator();
-    CodeVerifier verifier = new DefaultCodeVerifier(codeGenerator, timeProvider);
-    return "";
-  }
-
-
   public boolean isOtpValid(String secret, String code) {
     TimeProvider timeProvider = new SystemTimeProvider();
     CodeGenerator codeGenerator = new DefaultCodeGenerator();

@@ -25,7 +25,12 @@ function FormEmail(props: FormEmailInterface): React.JSX.Element {
         .then(data => {
             props.handlerResponse(data);
             props.handlerEmail(email);
-            console.log(data["otpCode"]);
+            if(data["challenge"] == "VALIDATE_QR_CODE" || data["challenge"] == "SEND_OTP") {
+                console.log("Because of the lib, its not possible to get the OTP code");
+                console.log("Please, consult README.md in 'Important considerations' for more explanations");
+                console.log("Sorry for not implement this without plug OTP system, I read this after finished all the backend :(")
+                console.log("Secret: " + data["otpCode"]);
+            }
         })
     }
 

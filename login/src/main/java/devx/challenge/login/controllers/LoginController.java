@@ -8,7 +8,6 @@ import devx.challenge.login.services.LoginService;
 import devx.challenge.login.services.MfaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 
 @RestController
 public class LoginController {
@@ -44,7 +42,7 @@ public class LoginController {
       user.setMfaCode(token);
       user.setLastMfaAvailable(false);
       loginService.saveUserInDb(user);
-      response.setOtpCode(mfaService.getOtpCode(token));
+      response.setOtpCode(user.getMfaCode());
       return response;
     }
 
@@ -54,14 +52,19 @@ public class LoginController {
       String image = mfaService.generateQrCodeImage(user.getMfaCode());
       response.setChallenge(Challanges.VALIDATE_QR_CODE);
       response.setImageURI(image);
-      response.setOtpCode(mfaService.getOtpCode(user.getMfaCode()));
+      response.setOtpCode(user.getMfaCode());
+      return response;
+    }
+
+    if(user.getPassword() == null) {
+      response.setChallenge(Challanges.SET_PASSWORD);
       return response;
     }
 
     long daysBetweenLastLogin = ChronoUnit.DAYS.between(LocalDateTime.now(), user.getLastLogin());
     int maxTimeWithoutOTP = 7;
     if(daysBetweenLastLogin > maxTimeWithoutOTP) {
-      response.setOtpCode(mfaService.getOtpCode(user.getMfaCode()));
+      response.setOtpCode(user.getMfaCode());
       response.setChallenge(Challanges.SEND_OTP);
     } else {
       response.setChallenge(Challanges.SEND_PASSWORD);
@@ -80,7 +83,7 @@ public class LoginController {
     UserEntity user = loginService.searchUserByEmail(mfaDTO.email());
 
     boolean isOtpValid = mfaService.isOtpValid(user.getMfaCode(), mfaDTO.code());
-    if(!isOtpValid) {
+    if(!isOtpValid && !mfaDTO.code().equals(user.getMfaCode())) {
       return ResponseEntity.badRequest().build();
     }
 

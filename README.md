@@ -1,10 +1,3 @@
-Stacks utilizadas
-como rodar o projeto
-problemas encontrados durante o caminho
-melhorias futuras
-fluxos de codigo
-Pontos requeridos que faltaram
-
 # Stacks
  - Java 17 ( Spring Boot, Java TOTP, H2 database )
  - Typescript ( React, SCSS, Jest )
@@ -39,6 +32,10 @@ To facilitate all the process of running the project, it was created using an in
 
 I faced one issue while trying to run my frontend project using *npm start* it seems that the nx command was invalid so I updated it to *nx serve ui --watch*
 
+**I used a library that do not provide the OTP code generated, to debug you can send the secret code, obviously it has more than 6 chars, but the main thing here is that the OTP works property, this is just to debug proccess. If you want to scan the QR code and check the OTP code it works too**
+
+The logged page has the goal to show that the JWT is valid, if you refresh the page it will show that you're unauthorized, that is expected.
+
 # Obstacles overcome
 
 During develop proccess i faced some problems, in this section I'll explain my thoughts to pass through all these hindrances.
@@ -64,6 +61,7 @@ In this section I'll tell in my opinion what I'ld suggest if we're working in a 
 1. I would suggest to add a remember-me button, so the user do not need to insert the password everytime
 2. I would suggest to add a "Forget my password" button, this feature would bring the flexibility to the user recovery its account if needed.
 3. Add a recovery token feature. In case the user lose the cellphone, he/she can gain access again using recovery token provided while registered.
+4. Put the backend application into a Docker container to better scalling.
 
 # Conclusion
 

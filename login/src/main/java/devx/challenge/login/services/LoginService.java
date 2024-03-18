@@ -1,13 +1,10 @@
 package devx.challenge.login.services;
 
 import devx.challenge.login.DTOs.AuthenticationResponseDTO;
-import devx.challenge.login.DTOs.LoginDTO;
 import devx.challenge.login.DTOs.SetupPasswordDTO;
 import devx.challenge.login.entities.UserEntity;
 import devx.challenge.login.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
