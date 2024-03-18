@@ -62,6 +62,7 @@ In this section I'll tell in my opinion what I'ld suggest if we're working in a 
 2. I would suggest to add a "Forget my password" button, this feature would bring the flexibility to the user recovery its account if needed.
 3. Add a recovery token feature. In case the user lose the cellphone, he/she can gain access again using recovery token provided while registered.
 4. Put the backend application into a Docker container to better scalling.
+5. Add end-2-end tests using RestAssured (Backend) and Cypress/Selenium (frontend)
 
 # Conclusion
 
