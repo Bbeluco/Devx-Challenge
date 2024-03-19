@@ -61,7 +61,7 @@ public class LoginController {
       return response;
     }
 
-    long daysBetweenLastLogin = ChronoUnit.DAYS.between(LocalDateTime.now(), user.getLastLogin());
+    long daysBetweenLastLogin = ChronoUnit.DAYS.between(user.getLastLogin(), LocalDateTime.now());
     int maxTimeWithoutOTP = 7;
     if(daysBetweenLastLogin > maxTimeWithoutOTP) {
       response.setOtpCode(user.getMfaCode());
