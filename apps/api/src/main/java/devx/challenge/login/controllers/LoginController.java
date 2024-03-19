@@ -39,20 +39,20 @@ public class LoginController {
 
       UserEntity user = new UserEntity();
       user.setEmail(loginDTO.email());
-      user.setMfaCode(token);
+      user.setMfaSecret(token);
       user.setLastMfaAvailable(false);
       loginService.saveUserInDb(user);
-      response.setOtpCode(user.getMfaCode());
+      response.setOtpCode(user.getMfaSecret());
       return response;
     }
 
     UserEntity user = loginService.searchUserByEmail(loginDTO.email());
 
     if(!user.isMfaEnabled()) {
-      String image = mfaService.generateQrCodeImage(user.getMfaCode());
+      String image = mfaService.generateQrCodeImage(user.getMfaSecret());
       response.setChallenge(Challanges.VALIDATE_QR_CODE);
       response.setImageURI(image);
-      response.setOtpCode(user.getMfaCode());
+      response.setOtpCode(user.getMfaSecret());
       return response;
     }
 
@@ -64,7 +64,7 @@ public class LoginController {
     long daysBetweenLastLogin = ChronoUnit.DAYS.between(user.getLastLogin(), LocalDateTime.now());
     int maxTimeWithoutOTP = 7;
     if(daysBetweenLastLogin > maxTimeWithoutOTP) {
-      response.setOtpCode(user.getMfaCode());
+      response.setOtpCode(user.getMfaSecret());
       response.setChallenge(Challanges.SEND_OTP);
     } else {
       response.setChallenge(Challanges.SEND_PASSWORD);
@@ -82,8 +82,8 @@ public class LoginController {
 
     UserEntity user = loginService.searchUserByEmail(mfaDTO.email());
 
-    boolean isOtpValid = mfaService.isOtpValid(user.getMfaCode(), mfaDTO.code());
-    if(!isOtpValid && !mfaDTO.code().equals(user.getMfaCode())) {
+    boolean isOtpValid = mfaService.isOtpValid(user.getMfaSecret(), mfaDTO.code());
+    if(!isOtpValid && !mfaDTO.code().equals(user.getMfaSecret())) {
       return ResponseEntity.badRequest().build();
     }
 

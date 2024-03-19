@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Date;
 
 @Data
 @Builder
@@ -27,7 +26,7 @@ public class UserEntity implements UserDetails {
   private String email;
   private String password;
   private boolean isMfaEnabled = false;
-  private String mfaCode;
+  private String mfaSecret;
   private boolean isLastMfaAvailable;
   private LocalDateTime lastLogin;
 
@@ -47,12 +46,12 @@ public class UserEntity implements UserDetails {
     isLastMfaAvailable = lastMfaAvailable;
   }
 
-  public String getMfaCode() {
-    return mfaCode;
+  public String getMfaSecret() {
+    return mfaSecret;
   }
 
-  public void setMfaCode(String mfaCode) {
-    this.mfaCode = mfaCode;
+  public void setMfaSecret(String mfaSecret) {
+    this.mfaSecret = mfaSecret;
   }
 
   public boolean isMfaEnabled() {

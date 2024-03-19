@@ -13,7 +13,6 @@ import dev.samstevens.totp.util.Utils;
 import devx.challenge.login.DTOs.MfaDTO;
 import devx.challenge.login.entities.UserEntity;
 import devx.challenge.login.repositories.UserRepository;
-import io.jsonwebtoken.io.Decoders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -61,7 +60,7 @@ public class MfaService {
   public boolean isOTPSetted(MfaDTO dto) {
     if(loginService.isUserCreated(dto.email())) {
       UserEntity user = userRepository.findByEmail(dto.email());
-      return user.getMfaCode() != null;
+      return user.getMfaSecret() != null;
     }
 
     return false;
